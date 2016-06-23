@@ -1,0 +1,102 @@
+#! /bin/bash
+#docker kill jenkins-master
+#docker rm jenkins-master
+#docker run -d --name jenkins-master --hostname jenkins-master -p 8082:8080 -p 50000:50000 -v /DATA/jenkin-master:/var/jenkins_home jenkins
+#*******************************************************************************
+# Copyright 2015 Hewlett-Packard Development Company, L.P.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and limitations under the License.
+#*******************************************************************************
+# Basic support for IRIX style chkconfig or sysv-rc-conf (for Ubuntu)
+#*******************************************************************************
+# Set the script to load at start-up (run as a daemon) via:
+# Redhat/Centos: chkconfig 235 98 55
+# Ubuntu:        sysv-rc-conf -level 325 98 55
+# Description: Manages a service controlled by the chkconfig or sysv-rc-conf command.
+# Default location is the server's /etc/init.d/ folder, grant required permissions.
+#*******************************************************************************
+#docker run -u 104 -p 80:9090 -p 50000:50000 -v /data/jenkins_chatops/jenkins:/var/jenkins_home -e "http_proxy=$http_proxy" -e "https_proxy=$http_proxy" -e "no_proxy=$no_proxy" jenkins_chatops
+
+SERVICE_NAME="jenkins-docker" # the service name (case sensitive, of course!). Should be the same as this script name
+JENKINS_NAME=jenkins-master
+
+# All parameters below are for the docker HOST machine, not the container!
+DATA_DIR="/data/jenkins_chatops/jenkins" # may need to manually clone to this location
+#SSH_DIR="/root/.ssh" # SSH keys to authenticate git operations within the repository
+DOCKER_IMAGE="jenkins_chatops"
+PORT=80
+DOCKER_PORT=9090
+SLAVE_PORT=50000
+USER_ID=104
+RESTART_OPT="--restart=always"
+
+#*******************************************************************************
+# start, stop, status functions
+function SERVICE_START() {
+    $SUDO_PREFIX /usr/bin/docker run -d --name ${JENKINS_NAME} $RESTART_OPT -u ${USER_ID} -p ${PORT}:${DOCKER_PORT} -p 50000:50000 -v ${DATA_DIR}:/var/jenkins_home -e "http_proxy=$http_proxy" -e "https_proxy=$http_proxy" -e "no_proxy=$no_proxy" ${DOCKER_IMAGE}
+    SERVICE_STATUS
+}
+
+function SERVICE_STOP() {
+    $SUDO_PREFIX docker kill $JENKINS_NAME
+    $SUDO_PREFIX docker rm $JENKINS_NAME
+}
+
+function SERVICE_STATUS() {
+    $SUDO_PREFIX docker ps -a | grep $JENKINS_NAME
+}
+#*******************************************************************************
+# authorized user verification, currtly, script is only supporting root!
+RUN_USERNAME="root"    # rename if clashes with system defined param
+USAGE="Usage: /sbin/service $SERVICE_NAME {start|stop|status|restart}"
+
+# set the USERNAME variable if missing from env
+if [ "x$USERNAME" = "x" ]; then
+    USERNAME=$(whoami)
+fi
+
+SUDO_PREFIX=""
+if [ $USERNAME = "root" ] ; then
+    SUDO_PREFIX="sudo -u $RUN_USERNAME "
+fi
+#*******************************************************************************
+# This part need not be changed, usually.
+
+case "$1" in
+    start)
+        echo -n "Starting $SERVICE_NAME"
+        #To run it as root:
+        SERVICE_START
+        ;;
+
+    stop)
+        echo -n "Stopping $SERVICE_NAME"
+        #To run it as root:
+        echo "Stopping $SERVICE_NAME container: $JENKINS_NAME"
+        SERVICE_STOP
+        echo "."
+        ;;
+
+    restart|reload|condrestart)
+        # service must be in path.
+        # usually under /sbin/service or /usr/sbin/service
+        service $SERVICE_NAME stop
+        service $SERVICE_NAME start
+        ;;
+
+    status)
+        SERVICE_STATUS
+        ;;
+  *)
+        echo $USAGE
+        exit 1
+esac
+
+exit 0
