@@ -34,13 +34,20 @@ DOCKER_IMAGE="jenkins_chatops"
 PORT=80
 DOCKER_PORT=9090
 SLAVE_PORT=50000
-USER_ID=104
+GROUP_ID=104
 RESTART_OPT="--restart=always"
+JAVA_OPTS=""
+if [ -n "$http_proxy" ]
+then
+  prx=$(echo $http_proxy | sed s/http.*:\\/\\///g)
+  JAVA_OPTS="-Dhttp.proxyHost=$(echo $prx | cut -d : -f1)  -Dhttp.proxyPort=$(echo $prx | cut -d : -f2)  -Dhttps.proxyHost=$(echo $prx | cut -d : -f1)  -Dhttps.proxyPort=$(echo $prx | cut -d : -f2)"
+  echo $JAVA_OPTS
+fi
 
 #*******************************************************************************
 # start, stop, status functions
 function SERVICE_START() {
-    $SUDO_PREFIX /usr/bin/docker run -d --name ${JENKINS_NAME} $RESTART_OPT -u ${USER_ID} -p ${PORT}:${DOCKER_PORT} -p 50000:50000 -v ${DATA_DIR}:/var/jenkins_home -e "http_proxy=$http_proxy" -e "https_proxy=$http_proxy" -e "no_proxy=$no_proxy" ${DOCKER_IMAGE}
+    $SUDO_PREFIX /usr/bin/docker run -d --name ${JENKINS_NAME} $RESTART_OPT -u :${GROUP_ID} -p ${PORT}:${DOCKER_PORT} -p 50000:50000 -v ${DATA_DIR}:/var/jenkins_home -e "http_proxy=$http_proxy" -e "https_proxy=$http_proxy" -e "no_proxy=$no_proxy"  -e "JAVA_OPTS=$JAVA_OPTS" ${DOCKER_IMAGE}
     SERVICE_STATUS
 }
 
