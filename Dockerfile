@@ -1,22 +1,30 @@
+#
+# Copyright 2016 Hewlett-Packard Development Company, L.P.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# Software distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and limitations under the License.
+
 FROM jenkinsci/jenkins:latest
 
 # machine conf
 USER root
 
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get update
-RUN apt-get install -y ca-certificates
-RUN apt-get install -y  bash git curl python
-RUN apt-get install -y nodejs build-essential
-RUN apt-get install -y dbus dbus-x11
-RUN apt-get upgrade -y
-RUN apt-get clean
-RUN apt-get autoremove -y
-RUN npm install -g coffee-script grunt jshint coffeelint mocha
-RUN npm cache clean
-RUN mkdir -p /var/run/dbus
-RUN chmod -R 777 /var/run/dbus
-RUN chown -R jenkins: /var/run/dbus
+RUN apt-get update && apt-get install -y ca-certificates \
+ bash git curl python nodejs build-essential \
+ dbus dbus-x11 && rm -rf /var/lib/apt/lists/*
+RUN npm install -g coffee-script grunt jshint coffeelint mocha \
+  && npm cache clean
+RUN mkdir -p /var/run/dbus && chmod -R 777 /var/run/dbus \
+  && chown -R jenkins: /var/run/dbus
 VOLUME /var/run/dbus
 
 USER jenkins
@@ -28,6 +36,7 @@ RUN npm set prefix ~/.npm
 #jenkins conf
 COPY config/*.groovy /usr/share/jenkins/ref/init.groovy.d/
 COPY config/plugins.txt /usr/share/jenkins/plugins.txt
-ADD templates /var/tmp/templates
+RUN mkdir /var/tmp/templates
+COPY templates/* /var/tmp/templates/
 
 RUN /usr/local/bin/plugins.sh /usr/share/jenkins/plugins.txt
