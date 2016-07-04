@@ -57,7 +57,7 @@ Build Jenkins docker image with needed tools for ChatOps project:
       -e "no_proxy=$no_proxy"  \
       -e "ORGANIZATION=<ORG_OR_USERNAME}><^+ENTERPRISE_URL>" \
       -e 'REGEX=<REGEX>' -e "HOST=http://<HOSTNAME||IP>:<PORT_IF_NOT_80>" \
-      -e JAVA_OPTS="-Dhttp.proxyHost=<proxy_host>  -Dhttp.proxyPort=<proxy_port>  -Dhttps.proxyHost=<proxy_host> -Dhttps.proxyPort=<proxy_port>" \
+      -e JAVA_OPTS="-Dhttp.proxyHost=<proxy_host without http[s]:// prefix>  -Dhttp.proxyPort=<proxy_port>  -Dhttps.proxyHost=<proxy_host without http[s]:// prefix> -Dhttps.proxyPort=<proxy_port>" \
       jenkins_chatops
     ```
     example:
@@ -73,16 +73,19 @@ Build Jenkins docker image with needed tools for ChatOps project:
     -e "no_proxy=$no_proxy"  \
     -e "ORGANIZATION=myOrg^github.myorg.org" \
     -e 'REGEX=hubot-.*' -e "HOST=http://myserver.acme.com" \
-	-e JAVA_OPTS="-Dhttp.proxyHost=<proxy_host>  -Dhttp.proxyPort=<proxy_port>  -Dhttps.proxyHost=<proxy_host> -Dhttps.proxyPort=<proxy_port>" \
+	  -e JAVA_OPTS="-Dhttp.proxyHost=<proxy_host without http[s]:// prefix>  -Dhttp.proxyPort=<proxy_port>  -Dhttps.proxyHost=<proxy_host without http[s]:// prefix> -Dhttps.proxyPort=<proxy_port>" \
     jenkins_chatops
     ```
 
-  3. (if using local folder) log in to jenkins server and stop the docker image
+  3. (if using local folder) log in to jenkins server with `admin` username and provided password and stop the docker image
   4. (if using local folder) run image without secret variables:
 
     ```bash
     docker run -p 80:9090 -p 50000:50000 \
-    -v <LOCAL_DIR>:/var/jenkins_home -u :<GID> jenkins_chatops
+    -v <LOCAL_DIR>:/var/jenkins_home \
+    -e "http_proxy=$http_proxy" -e "https_proxy=$http_proxy" \
+    -e JAVA_OPTS="-Dhttp.proxyHost=<proxy_host without http[s]:// prefix>  -Dhttp.proxyPort=<proxy_port>  -Dhttps.proxyHost=<proxy_host without http[s]:// prefix> -Dhttps.proxyPort=<proxy_port>" \
+    -u :<GID> jenkins_chatops
     ```
 
 2. edit `init.d/jenkins-docker` file to change the following params (if needed)
