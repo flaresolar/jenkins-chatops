@@ -15,7 +15,6 @@ docker-commons:1.4.0
 docker-workflow:1.4
 durable-task:1.10
 envinject:1.92.1
-external-monitor-job:1.4
 ghprb:1.32.6
 git:2.5.0
 git-changelog:1.32
