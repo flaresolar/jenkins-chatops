@@ -113,3 +113,7 @@ Build Jenkins docker image with needed tools for ChatOps project:
 8. proxy auto setup (if `http_proxy` env var is set)
 9. set jenkins root url if `HOST` env var is set
 10. **create github organization folder** if `ORGANIZATION` env var passed
+
+## Testing [linux]:
+1. Download and install bats testing framework: https://github.com/sstephenson/bats
+2. run `bats tests/tests.bat`
