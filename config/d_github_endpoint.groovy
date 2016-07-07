@@ -28,11 +28,10 @@ Logger logger = Logger.getLogger("github-enterprise-api-endpoint")
 logger.info("about to add GHE API endpoint")
 
 def GH = env['ORGANIZATION'] ? env['ORGANIZATION'].tokenize('^') : []
+new_url = GH.size() > 1 ? GH[1] : null
 
 GitHubConfiguration gitHubConfig = GlobalConfiguration.all().get(GitHubConfiguration.class)
 endpointList = gitHubConfig.getEndpoints().collect()
-
-new_url = GH.size() > 1 ? GH[1] : null
 
 if (new_url && !find_endpoint(gitHubConfig.getEndpoints(), new_url)){
   Endpoint gheApiEndpoint = new Endpoint("https://"+new_url+"/api/v3/", new_url)

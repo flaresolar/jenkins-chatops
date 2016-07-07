@@ -15,7 +15,8 @@
 
 import jenkins.model.*
 env = System.getenv()
-Jenkins.instance.setNumExecutors(5)
+numOfExecutors = 5
+Jenkins.instance.setNumExecutors(numOfExecutors)
 
 jlc = JenkinsLocationConfiguration.get()
 if (env['HOST'] && !jlc.getUrl()){

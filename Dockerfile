@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y ca-certificates \
  dbus dbus-x11 && rm -rf /var/lib/apt/lists/*
 RUN npm install -g coffee-script grunt jshint coffeelint mocha \
   && npm cache clean
+# make npm install work in jenkins+ docker env
 RUN mkdir -p /var/run/dbus && chmod -R 777 /var/run/dbus \
   && chown -R jenkins: /var/run/dbus
 VOLUME /var/run/dbus
