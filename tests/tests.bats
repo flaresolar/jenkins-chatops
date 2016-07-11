@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 #
-# Original copied from: https://github.com/jenkinsci/docker
+# Code modified from tests/tests.bats obtained from  https://github.com/jenkinsci/docker
 
 SUT_IMAGE=jenkins_chatops
 SUT_CONTAINER=bats-jenkins

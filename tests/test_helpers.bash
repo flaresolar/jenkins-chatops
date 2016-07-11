@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 #
-# Original copied from: https://github.com/jenkinsci/docker
+# Code modified from tests/test_helpers.bash obtained from  https://github.com/jenkinsci/docker
 
 # check dependencies
 (
