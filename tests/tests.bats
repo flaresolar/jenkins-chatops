@@ -15,7 +15,7 @@
 #
 # Code modified from tests/tests.bats obtained from  https://github.com/jenkinsci/docker
 
-SUT_IMAGE=jenkins_chatops
+SUT_IMAGE=jenkins-chatops
 SUT_CONTAINER=bats-jenkins
 
 #TEST PARAMS

@@ -13,5 +13,5 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-docker build -t jenkins_chatops --build-arg "http_proxy=$http_proxy" \
+docker build -t jenkins-chatops --build-arg "http_proxy=$http_proxy" \
   --build-arg "https_proxy=$http_proxy" --build-arg "no_proxy=$no_proxy" .
