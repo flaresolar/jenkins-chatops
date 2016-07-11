@@ -73,7 +73,7 @@ Build Jenkins docker image with needed tools for ChatOps project:
     -e "no_proxy=$no_proxy"  \
     -e "ORGANIZATION=myOrg^github.myorg.org" \
     -e 'REGEX=hubot-.*' -e "HOST=http://myserver.acme.com" \
-	  -e JAVA_OPTS="-Dhttp.proxyHost=<proxy_host without http[s]:// prefix>  -Dhttp.proxyPort=<proxy_port>  -Dhttps.proxyHost=<proxy_host without http[s]:// prefix> -Dhttps.proxyPort=<proxy_port>" \
+    -e JAVA_OPTS="-Dhttp.proxyHost=<proxy_host without http[s]:// prefix>  -Dhttp.proxyPort=<proxy_port>  -Dhttps.proxyHost=<proxy_host without http[s]:// prefix> -Dhttps.proxyPort=<proxy_port>" \
     jenkins_chatops
     ```
 
@@ -117,3 +117,6 @@ Build Jenkins docker image with needed tools for ChatOps project:
 ## Testing [linux]:
 1. Download and install bats testing framework: https://github.com/sstephenson/bats
 2. run `bats tests/tests.bat`
+
+## DISCLAIMER
+Currently jenkins-chatops support slack platform, other platforms might be added later on.
