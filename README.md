@@ -29,11 +29,9 @@ Build Jenkins docker image with needed tools for ChatOps project:
   5. Follow the wizard to add the app
   6. Write down app API token, your team name, and rooms jenkins will report to
 
-## build
-1. run `sudo ./build.sh` to build the docker image
-
 ## run
-1. First run (or run without local jenkins folder)
+1. `docker pull chatopshpe/jenkins-chatops`
+2. First run (or run without local jenkins folder)
   1. (optional) create folder for jenkins to store data
    1. create jenkins user `sudo adduser jenkins`
    2. chown the folder to user jenkins
@@ -88,7 +86,7 @@ Build Jenkins docker image with needed tools for ChatOps project:
     -u :<GID> jenkins_chatops
     ```
 
-2. edit `init.d/jenkins-docker` file to change the following params (if needed)
+3. edit `init.d/jenkins-docker` file to change the following params (if needed)
   - `JENKINS_NAME=jenkins-master`
   - `DATA_DIR="<LOCAL_DIR>"``
   - `DOCKER_IMAGE="jenkins_chatops"``
@@ -97,9 +95,9 @@ Build Jenkins docker image with needed tools for ChatOps project:
   - `SLAVE_PORT=50000`
   - `GROUP_ID=<JENKINS_GROUP_ID>` group id jenkins data folder belongs to (`id <username>`)
   - `RESTART_OPT="--restart=always"``
-3. `sudo cp init.d/jenkins-docker /etc/init.d/`
-4. `sudo chmod +x /etc/init.d/jenkins-docker`
-5. manage service using `sudo service jenkins-docker start/stop/status`
+4. `sudo cp init.d/jenkins-docker /etc/init.d/`
+5. `sudo chmod +x /etc/init.d/jenkins-docker`
+6. manage service using `sudo service jenkins-docker start/stop/status`
 
 ## Dockerized:
 1. plugins
@@ -113,6 +111,9 @@ Build Jenkins docker image with needed tools for ChatOps project:
 8. proxy auto setup (if `http_proxy` env var is set)
 9. set jenkins root url if `HOST` env var is set
 10. **create github organization folder** if `ORGANIZATION` env var passed
+
+## build
+1. run `sudo ./build.sh` to build the docker image
 
 ## Testing [linux]:
 1. Download and install bats testing framework: https://github.com/sstephenson/bats
