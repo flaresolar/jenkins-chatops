@@ -14,6 +14,7 @@ node {
   
     stage 'Checkout'
     checkout scm
+	sh 'git submodule update --init --recursive'
  
     stage 'Build'
 	// retry because of bad internet here
