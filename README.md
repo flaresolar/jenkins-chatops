@@ -56,7 +56,7 @@ Build Jenkins docker image with needed tools for ChatOps project:
       -e "ORGANIZATION=<ORG_OR_USERNAME}><^+ENTERPRISE_URL>" \
       -e 'REGEX=<REGEX>' -e "HOST=http://<HOSTNAME||IP>:<PORT_IF_NOT_80>" \
       -e JAVA_OPTS="-Dhttp.proxyHost=<proxy_host without http[s]:// prefix>  -Dhttp.proxyPort=<proxy_port>  -Dhttps.proxyHost=<proxy_host without http[s]:// prefix> -Dhttps.proxyPort=<proxy_port>" \
-      jenkins_chatops
+      jenkins-chatops
     ```
     example:
 
@@ -72,7 +72,7 @@ Build Jenkins docker image with needed tools for ChatOps project:
     -e "ORGANIZATION=myOrg^github.myorg.org" \
     -e 'REGEX=hubot-.*' -e "HOST=http://myserver.acme.com" \
     -e JAVA_OPTS="-Dhttp.proxyHost=<proxy_host without http[s]:// prefix>  -Dhttp.proxyPort=<proxy_port>  -Dhttps.proxyHost=<proxy_host without http[s]:// prefix> -Dhttps.proxyPort=<proxy_port>" \
-    jenkins_chatops
+    jenkins-chatops
     ```
 
   3. (if using local folder) log in to jenkins server with `admin` username and provided password and stop the docker image
@@ -83,7 +83,7 @@ Build Jenkins docker image with needed tools for ChatOps project:
     -v <LOCAL_DIR>:/var/jenkins_home \
     -e "http_proxy=$http_proxy" -e "https_proxy=$http_proxy" \
     -e JAVA_OPTS="-Dhttp.proxyHost=<proxy_host without http[s]:// prefix>  -Dhttp.proxyPort=<proxy_port>  -Dhttps.proxyHost=<proxy_host without http[s]:// prefix> -Dhttps.proxyPort=<proxy_port>" \
-    -u :<GID> jenkins_chatops
+    -u :<GID> jenkins-chatops
     ```
 
 3. edit `init.d/jenkins-docker` file to change the following params (if needed)
