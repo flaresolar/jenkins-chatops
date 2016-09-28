@@ -43,6 +43,14 @@ node {
 	  extensions: [[$class: 'RelativeTargetDirectory',
 	  relativeTargetDir: 'bats']], submoduleCfg: [],
 	  userRemoteConfigs: [[url: 'https://github.com/sstephenson/bats.git']]])
-    sh "bats/bin/bats tests/tests.bats"
+    sh "bats/bin/bats tests/tests.bats | tee test.tap"
+	step([$class: 'TapPublisher', discardOldReports: false,
+	  enableSubtests: false, failIfNoResults: false,
+	  failedTestsMarkBuildAsFailure: true, flattenTapResult: false,
+	  includeCommentDiagnostics: false, outputTapToConsole: false,
+	  planRequired: false, showOnlyFailures: false, skipIfBuildNotOk: false,
+	  stripSingleParents: false, testResults: 'test.tap', todoIsFailure: false,
+	  validateNumberOfTests: false, verbose: true])
+	
   }
 }
