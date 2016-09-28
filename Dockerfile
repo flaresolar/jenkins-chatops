@@ -12,7 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-FROM jenkinsci/jenkins:latest
+FROM jenkinsci/jenkins:2.23
 
 # machine conf
 USER root
@@ -40,4 +40,4 @@ COPY config/plugins.txt /usr/share/jenkins/plugins.txt
 RUN mkdir /var/tmp/templates
 COPY templates/* /var/tmp/templates/
 
-RUN /usr/local/bin/plugins.sh /usr/share/jenkins/plugins.txt
+RUN /usr/local/bin/install-plugins.sh $(cat /usr/share/jenkins/plugins.txt)
